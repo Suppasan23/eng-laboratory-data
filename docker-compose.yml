@@ -2,7 +2,7 @@ version: '3.8'
 services:
 ###############################################################################
   web:
-    container_name: container_php_mysql_project1-PHP
+    container_name: container_eng-laboratory-data_PHP
     build:
         context: .
         dockerfile: Dockerfile
@@ -16,7 +16,7 @@ services:
       - db
 ###############################################################################
   db:
-    container_name: container_php_mysql_project1-MySQL
+    container_name: container_eng-laboratory-data_MySQL
     image: mysql:8.0
     restart: always
     command: ["--default-authentication-plugin=mysql_native_password"]
@@ -26,7 +26,7 @@ services:
       - "./mysql:/var/lib/mysql"
 ###############################################################################
   adminer:
-    container_name: container_php_mysql_project1-Adminer
+    container_name: container_eng-laboratory-data_Adminer
     image: adminer:4.8.1
     restart: always
     ports:
