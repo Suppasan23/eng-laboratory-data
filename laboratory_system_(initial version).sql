@@ -7,6 +7,9 @@ SET sql_mode = 'NO_AUTO_VALUE_ON_ZERO';
 
 SET NAMES utf8mb4;
 
+CREATE DATABASE `laboratory_system` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `laboratory_system`;
+
 DROP TABLE IF EXISTS `admin`;
 CREATE TABLE `admin` (
   `id` smallint unsigned NOT NULL AUTO_INCREMENT,
@@ -32,4 +35,4 @@ CREATE TABLE `engineering_lab` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
--- 2023-02-22 10:30:01
+-- 2023-02-22 13:56:19
