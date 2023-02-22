@@ -159,6 +159,7 @@ if($_POST)
   
 
 </form> 
+</fieldset>
 
 </div>
 

@@ -133,11 +133,15 @@ if(isset($_GET['action']))
             {
                 echo mysqli_error($conn);
             }
+            else
+            {
+                echo "<h3>ข้อมูลถูกลบแล้ว</h3>";
+                header("refresh: 1; url=index.php");
+            }
     }
-    else
+    else if($action == "delete") //ถ้าเป็นการแก้ไขข้อมูล ต้องอ่านข้อมูลเดิมมาเติมลงในฟอร์ม
     {
-        echo "<h3>ข้อมูลถูกลบแล้ว</h3>";
         
     }
-
 }
+

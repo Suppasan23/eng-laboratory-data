@@ -25,7 +25,6 @@ session_start();
             }
             else/*ล็อคอินแล้ว*/
             {
-                echo "<a class='additem' id='additem'>เพิ่มข้อมูล</a><br/>";
                 echo "<a class='logined'  href='logout.php'>Logout</a>";
             }
         ?>

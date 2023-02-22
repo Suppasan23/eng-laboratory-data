@@ -56,6 +56,10 @@ session_start();
             echo "<th>อุปกรณ์</th>";
             echo "<th>จำนวน</th>";
             echo "<th>ผู้รับผิดชอบ</th>";
+            if(isset($_SESSION['name'])) 
+            {	
+                echo "<th><a class='additem' href='update.php?action=insert'>เพิ่มข้อมูล</a></th>";
+            }
             echo "</tr>";
                 
                 for($i=0; $i < count($dataParameter); $i++)
@@ -73,8 +77,8 @@ session_start();
                         $table = $dataParameter[$i]->branch;
                         $id = $dataParameter[$i]->id;    
                         echo "<td>
-                                <a href='edit.php?action=edit&table=".$table."&id=".$id."'>แก้ไข</a> |
-                                <a style = 'color:red'; href='edit.php?action=delete&table=".$table."&id=".$id."'>ลบ</a>
+                                <a href='update.php?action=edit&table=".$table."&id=".$id."'>แก้ไข</a> |
+                                <a style = 'color:red'; href='update.php?action=delete&table=".$table."&id=".$id."'>ลบ</a>
                             </td>";
                     }
                     echo "</tr>";
@@ -84,4 +88,4 @@ session_start();
 ?>
 
 
-</script>	
+<script src="javascript.js"></script>

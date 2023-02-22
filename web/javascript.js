@@ -43,8 +43,3 @@ function showData(str)
     xmlhttp.open("GET", "getdata.php?q=" + str, true);
     xmlhttp.send();
 }
-
-document.getElementById("additem").addEventListener("click",function()
-{
-  window.open('add.php', "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=200,left=500,width=600,height=400");
-})
