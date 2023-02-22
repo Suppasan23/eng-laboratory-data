@@ -6,34 +6,24 @@ session_start();
         $q = $_REQUEST["q"];
 
         $mysql = new mysqli("db","root","root","laboratory_system");
-
-        if ($conn->connect_error)
-        {
-            die("Connection failed: " . $conn->connect_error);
-        }
+        if ($conn->connect_error){die("Connection failed: " . $conn->connect_error);}
 
         if ($q == "all")
         {
-            $tables = array("civil", "electrical", "mechanical", "industrial", "computer");
-            $dataArgument = array();
-
-            foreach ($tables as $table) 
+            $sql = "SELECT * FROM engineering_lab";
+        
+            if ($result = $mysql->query($sql)) 
             {
-                $sql = "SELECT * FROM $table";
-            
-                if ($result = $mysql->query($sql)) 
+                while ($data = $result->fetch_object()) 
                 {
-                    while ($data = $result->fetch_object()) 
-                    {
-                        $dataArgument[] = $data;
-                    }
+                    $dataArgument[] = $data;
                 }
             }
             printData($dataArgument);
         }
         else
         {
-            $sql = "SELECT * FROM $q";
+            $sql = "SELECT * FROM engineering_lab WHERE branch = '$q'";
 
             if ($result = $mysql->query($sql))
             {
@@ -62,6 +52,8 @@ session_start();
             }
             echo "</tr>";
                 
+            if(isset($dataParameter) && isset($dataParameter[0])) 
+            {
                 for($i=0; $i < count($dataParameter); $i++)
                 {
                     echo "<tr>";
@@ -74,16 +66,20 @@ session_start();
 
                     if(isset($_SESSION['name'])) 
                     {		
-                        $table = $dataParameter[$i]->branch;
-                        $id = $dataParameter[$i]->id;    
+                        $id = $dataParameter[$i]->id; 
                         echo "<td>
-                                <a href='update.php?action=edit&table=".$table."&id=".$id."'>แก้ไข</a> |
-                                <a style = 'color:red'; href='update.php?action=delete&table=".$table."&id=".$id."'>ลบ</a>
+                                <a href='update.php?action=edit&id=".$id."'>แก้ไข</a> |
+                                <a style = 'color:red'; href='update.php?action=delete&id=".$id."'>ลบ</a>
                             </td>";
                     }
                     echo "</tr>";
                 }
             echo "</table>";
+            } 
+            else
+            {
+                echo "No data to display.";
+            }
         }
 ?>
 

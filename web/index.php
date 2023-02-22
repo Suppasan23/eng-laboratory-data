@@ -35,11 +35,11 @@ session_start();
 <div class="body">
     <div class="body-one" id="myButton">
         <button class="btnA active" type="button" value="all">ทั้งหมด</button><br/>
-        <button class="btn" type="button" value="civil">วิศวกรรมโยธา</button><br/>
-        <button class="btn" type="button" value="electrical">วิศวกรรมไฟฟ้า</button><br/>
-        <button class="btn" type="button" value="mechanical">วิศวกรรมเครื่องกล</button><br/>
-        <button class="btn" type="button" value="industrial">วิศวกรรมอุตสาหการ</button><br/>
-        <button class="btn" type="button" value="computer">วิศวกรรมคอมพิวเตอร์</button><br/>
+        <button class="btn" type="button" value="โยธา">วิศวกรรมโยธา</button><br/>
+        <button class="btn" type="button" value="ไฟฟ้า">วิศวกรรมไฟฟ้า</button><br/>
+        <button class="btn" type="button" value="เครื่องกล">วิศวกรรมเครื่องกล</button><br/>
+        <button class="btn" type="button" value="อุตสาหการ">วิศวกรรมอุตสาหการ</button><br/>
+        <button class="btn" type="button" value="คอมพิวเตอร์">วิศวกรรมคอมพิวเตอร์</button><br/>
     </div>
 
     <div class="body-two">

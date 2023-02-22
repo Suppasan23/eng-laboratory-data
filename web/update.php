@@ -80,7 +80,6 @@ session_start();
 		border:solid 1px #000000;
 		border-radius: 3px;
 		padding: 3px 20px;
-		margin-left: 72%;
 		font: 18px tahoma;
 	}
 	br.clear 
@@ -91,6 +90,13 @@ session_start();
 	{
 		text-align: center;
 	}
+    div.button
+    {
+        text-align: right;
+        margin-right: 3%;
+        
+    }
+
 	
 </style>
 
@@ -108,7 +114,6 @@ if(!isset($_GET['action'])) {
 if(isset($_GET['action']))
 {
     $action = $_GET['action'];
-    $table = $_GET['table'];
     $id = $_GET['id'];
 
     $conn = new mysqli("db","root","root","laboratory_system");
@@ -121,7 +126,7 @@ if(isset($_GET['action']))
     }
     else if($action == "delete") //ถ้า Action เป็นการลบ ก็นำค่า id ไปกำหนดเป็นเงื่อนไขการลบ
     {
-        $sql = "DELETE FROM $table WHERE id = $id";
+        $sql = "DELETE FROM engineering_lab WHERE id = $id";
         $delete = mysqli_query($conn , $sql);
         if(!$delete)
             {
@@ -136,12 +141,41 @@ if(isset($_GET['action']))
     else if($action == "edit") //ถ้า Action เป็นการแก้ไขข้อมูล ต้องอ่านข้อมูลเดิมมาเติมลงในฟอร์ม
     {
         $h = "แก้ไขข้อมูล";
-        $sql = "SELECT * FROM $table WHERE id = $id";
+        $sql = "SELECT * FROM engineering_lab WHERE id = $id";
         $result = mysqli_query($conn, $sql);
         $data = mysqli_fetch_array($result);
     }
 }
+?>
 
+<?php
+if($_POST['id'])
+{
+	$conn = new mysqli("db","root","root","laboratory_system");// Create connection
+	if ($conn->connect_error){die("Connection failed: " . $conn->connect_error);}// Check connection
+
+    $values = implode("', '", $_POST);
+    $values = "'".$values."'";
+
+    $sql = "REPLACE INTO engineering_lab (id, branch, room, instrument, quantity, caretaker, image)
+    VALUES ('$branch', '$room', '$instrument', '$quantity', '$caretaker', '$image');";
+
+    $replace = mysqli_query($conn,$sql);
+
+    if(!$replace)
+    {
+        echo mysqli_error($conn);
+    }
+    else
+    {
+        echo "<h3 style = 'color:green'>ข้อมูลถูกเพิ่มแล้ว</h3>";
+        back();
+    }
+
+}
+?>
+
+<?php
 function back()
 {
     global $conn;
@@ -151,30 +185,20 @@ function back()
 //mysql_close($conn);
 ?>
 
-
-
 <fieldset><legend><?php echo $h; ?></legend>
 <form method="post">
 
     <label>id:</label>
-    <?php echo $data['id']; ?></a><br/>
+    <input style="width: 100px;" type="text" id="id" name="id" value="<?php echo $data['id']; ?>" 
+    placeholder="<?php echo (empty($data['branch']) ? "ไม่ต้องระบุ" : $data['branch']); ?>" disabled><br>
 
     <label for="branch">สาขา:</label>
     <select id="branch" name="branch">
-    <?php
-    if($action == "edit")
-    {
-        echo "<option value='" . $data['branch'] . "'>" . $data['branch'] . "</option>";
-    }
-    else
-    {
-        echo "<option value='civil'>โยธา</option>";
-        echo "<option value='electrical'>ไฟฟ้า</option>";
-        echo "<option value='mechanical'>เครื่องกล</option>";
-        echo "<option value='industrial'>อุตสาหการ</option>";
-        echo "<option value='computer'>คอมพิวเตอร์</option>";
-    }
-    ?>
+        <option value='โยธา' <?php if ($data['branch'] == 'โยธา') echo 'selected'; ?>>โยธา</option>
+        <option value='ไฟฟ้า' <?php if ($data['branch'] == 'ไฟฟ้า') echo 'selected'; ?>>ไฟฟ้า</option>
+        <option value='เครื่องกล' <?php if ($data['branch'] == 'เครื่องกล') echo 'selected'; ?>>เครื่องกล</option>
+        <option value='อุตสาหการ' <?php if ($data['branch'] == 'อุตสาหการ') echo 'selected'; ?>>อุตสาหการ</option>
+        <option value='คอมพิวเตอร์' <?php if ($data['branch'] == 'คอมพิวเตอร์') echo 'selected'; ?>>คอมพิวเตอร์</option>
     </select><br>
 
   <label for="room">ห้อง:</label>
@@ -192,9 +216,9 @@ function back()
   <label for="caretaker">รูปภาพ:</label>
   <input type="text" id="image" name="image" value="<?php echo $data['image'] ?>"><br><br>
 
-  <button type="submit" value="Submit">ส่งข้อมูล</button>
+  <div class="button"><button type="submit" value="Submit">ส่งข้อมูล</button>&nbsp;&nbsp;<a class="back" href="index.php">ย้อนกลับ</a></div>
   
-
+  
 </form> 
 </fieldset>
 
