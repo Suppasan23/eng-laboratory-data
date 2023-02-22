@@ -7,9 +7,6 @@ SET sql_mode = 'NO_AUTO_VALUE_ON_ZERO';
 
 SET NAMES utf8mb4;
 
-CREATE DATABASE `laboratory_system` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `laboratory_system`;
-
 DROP TABLE IF EXISTS `admin`;
 CREATE TABLE `admin` (
   `id` smallint unsigned NOT NULL AUTO_INCREMENT,
@@ -19,7 +16,8 @@ CREATE TABLE `admin` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 INSERT INTO `admin` (`id`, `username`, `password`) VALUES
-(1,	'batman',	'batman');
+(1,	'batman',	'batman'),
+(2,	'batman99',	'batman99');
 
 DROP TABLE IF EXISTS `civil`;
 CREATE TABLE `civil` (
@@ -34,7 +32,7 @@ CREATE TABLE `civil` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 INSERT INTO `civil` (`id`, `branch`, `room`, `instrument`, `quantity`, `caretaker`, `image`) VALUES
-(1,	'วิศวกรรมโยธา',	'27102',	'เครื่องดึงเหล็ก',	1,	'จอห์น ชาวไร่',	'');
+(5,	'civil',	'โรงงานไม้',	'เครื่องตัดไม้',	2,	'จอห์น ชาวไร่',	'-');
 
 DROP TABLE IF EXISTS `computer`;
 CREATE TABLE `computer` (
@@ -49,7 +47,7 @@ CREATE TABLE `computer` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 INSERT INTO `computer` (`id`, `branch`, `room`, `instrument`, `quantity`, `caretaker`, `image`) VALUES
-(1,	'วิศวกรรมคอมพิวเตอร์',	'65872',	'เครื่องกู้ข้อมูลฮาร์ดดิส',	1,	'เชฟหมี',	'');
+(3,	'computer',	'ห้องปฏิบัติการเซิฟเวอร์',	'เครื่องคอมพิวเตอร์เซิฟเวอร์สำหรับการเรียน',	5,	'โดบิตะ',	'-');
 
 DROP TABLE IF EXISTS `electrical`;
 CREATE TABLE `electrical` (
@@ -64,7 +62,7 @@ CREATE TABLE `electrical` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 INSERT INTO `electrical` (`id`, `branch`, `room`, `instrument`, `quantity`, `caretaker`, `image`) VALUES
-(1,	'วิศวกรรมไฟฟ้า',	'16589',	'เครื่องวัดกระแสไฟฟ้าแรงสูง',	1,	'โดบิตะ',	'');
+(3,	'electrical',	'ห้องปฏิบัติการไฟฟ้า',	'เครื่องมือวัดไฟฟ้าแรงสูง (High Voltage)',	2,	'ปาโต้เยา',	'-');
 
 DROP TABLE IF EXISTS `industrial`;
 CREATE TABLE `industrial` (
@@ -79,7 +77,7 @@ CREATE TABLE `industrial` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 INSERT INTO `industrial` (`id`, `branch`, `room`, `instrument`, `quantity`, `caretaker`, `image`) VALUES
-(1,	'วิศวกรรมอุตสาหการ',	'8546',	'เครื่องตัดเลเซอร์',	3,	'ปาโต้เยา',	'');
+(3,	'industrial',	'โรงกลึง',	'เครื่องกลึง',	8,	'จอห์น สโนว์',	'-');
 
 DROP TABLE IF EXISTS `mechanical`;
 CREATE TABLE `mechanical` (
@@ -94,6 +92,6 @@ CREATE TABLE `mechanical` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 INSERT INTO `mechanical` (`id`, `branch`, `room`, `instrument`, `quantity`, `caretaker`, `image`) VALUES
-(1,	'วิศวกรรมเครื่องกล',	'12548',	'เครื่องทำความเย็น',	3,	'นายสามชาย พายเรือ',	'');
+(3,	'mechanical',	'โรงงานเครื่องกล',	'เครื่องทดสอบแรงดันเครื่องยนต์',	1,	'เชฟหมี',	'-');
 
--- 2023-02-21 10:34:25
+-- 2023-02-22 06:14:22
