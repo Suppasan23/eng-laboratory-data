@@ -1,23 +1,22 @@
-<?php 
-session_start(); 
+<?php
+session_start();
 ?>
 
- 
  <?php
         $q = $_REQUEST["q"];
 
         $mysql = new mysqli("db","root","root","laboratory_system");
 
-        if ($conn->connect_error) 
+        if ($conn->connect_error)
         {
             die("Connection failed: " . $conn->connect_error);
-        } 
+        }
 
         if ($q == "all")
         {
             $tables = array("civil", "electrical", "mechanical", "industrial", "computer");
             $dataArgument = array();
-            
+
             foreach ($tables as $table) 
             {
                 $sql = "SELECT * FROM $table";
@@ -71,14 +70,18 @@ session_start();
 
                     if(isset($_SESSION['name'])) 
                     {		
-                        echo "<td>" . "<a onclick=ToDeletting($room_number,$id_number) style = 'color: #a40000; text-decoration: underline;cursor: pointer;'>แก้ไข</a>" . "</td>";	
+                        $table = $dataParameter[$i]->branch;
+                        $id = $dataParameter[$i]->id;    
+                        echo "<td>
+                                <a href='edit.php?action=edit&table=".$table."&id=".$id."'>แก้ไข</a> |
+                                <a style = 'color:red'; href='edit.php?action=delete&table=".$table."&id=".$id."'>ลบ</a>
+                            </td>";
                     }
-
                     echo "</tr>";
                 }
-                
             echo "</table>";
         }
 ?>
 
 
+</script>	
