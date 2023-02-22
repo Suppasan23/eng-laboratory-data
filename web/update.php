@@ -124,14 +124,14 @@ if(isset($_GET['action']))
     {
         $h = "เพิ่มข้อมูล";
     }
-    else if($action == "edit") //ถ้า Action เป็นการแก้ไขข้อมูล ต้องอ่านข้อมูลเดิมมาเติมลงในฟอร์ม
+	else if($action == "edit") //ถ้า Action เป็นการแก้ไขข้อมูล ต้องอ่านข้อมูลเดิมมาเติมลงในฟอร์ม
     {
         $h = "แก้ไขข้อมูล";
         $sql = "SELECT * FROM engineering_lab WHERE id = $id";
         $result = mysqli_query($conn, $sql);
         $data = mysqli_fetch_array($result);
     }
-    else if($action == "delete") //ถ้า Action เป็นการลบ ก็นำค่า id ไปกำหนดเป็นเงื่อนไขการลบ
+	else if($action == "delete") //ถ้า Action เป็นการลบ ก็นำค่า id ไปกำหนดเป็นเงื่อนไขการลบ
     {
         $sql = "DELETE FROM engineering_lab WHERE id = $id";
         $delete = mysqli_query($conn , $sql);
@@ -145,26 +145,25 @@ if(isset($_GET['action']))
                 back();
             }
     }
-
 }
 ?>
 
 <?php
 if($_POST)
 {
-    echo $_POST['id'];
-    echo $_POST['branch'];
-    echo $_POST['room'];
-    echo $_POST['instrument'];
-    
+	//$id = $_POST['id'];
+	$branch = $_POST['branch'];
+	$room = $_POST['room'];
+	$instrument = $_POST['instrument'];
+	$quantity = $_POST['quantity'];
+	$caretaker = $_POST['caretaker'];
+	$image = $_POST['image'];
 
 	$conn = new mysqli("db","root","root","laboratory_system");// Create connection
 	if ($conn->connect_error){die("Connection failed: " . $conn->connect_error);}// Check connection
 
-    $values = implode("', '", $_POST);
-    $values = "'".$values."'";
-
-    $sql = "REPLACE INTO engineering_lab VALUES($values);";
+    $sql = "REPLACE INTO engineering_lab (branch, room, instrument, quantity, caretaker, image)
+    VALUES ('$branch', '$room', '$instrument', '$quantity', '$caretaker', '$image');";
 
     $replace = mysqli_query($conn,$sql);
 

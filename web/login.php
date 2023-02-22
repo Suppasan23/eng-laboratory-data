@@ -53,7 +53,7 @@ if($_POST)
     <div align = "right" style = "margin-right: 45px;">
 	<form method="post">
 		
-  		<label style = "font-size:20px;">UserName :</label>  <input style = "font-size:20px;" type="text" name="input_user" required><br>
+  		<label style = "font-size:20px;">User :</label>  <input style = "font-size:20px;" type="text" name="input_user" required><br>
     	<label style = "font-size:20px;">Password :</label>  <input style = "font-size:20px;" type="password" name="input_pswd" required><br><br>
     	<button style = "width:65px; height:38px; font-size:20px;">Login</button>
 		&nbsp;
