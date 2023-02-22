@@ -149,21 +149,15 @@ if(isset($_GET['action']))
 ?>
 
 <?php
-if($_POST)
+if($_POST['id'])
 {
-	//$id = $_POST['id'];
-	$branch = $_POST['branch'];
-	$room = $_POST['room'];
-	$instrument = $_POST['instrument'];
-	$quantity = $_POST['quantity'];
-	$caretaker = $_POST['caretaker'];
-	$image = $_POST['image'];
-
 	$conn = new mysqli("db","root","root","laboratory_system");// Create connection
 	if ($conn->connect_error){die("Connection failed: " . $conn->connect_error);}// Check connection
 
-    $sql = "REPLACE INTO engineering_lab (branch, room, instrument, quantity, caretaker, image)
-    VALUES ('$branch', '$room', '$instrument', '$quantity', '$caretaker', '$image');";
+    $values = implode("', '", $_POST);
+    $values = "'".$values."'";
+
+    $sql = "REPLACE INTO engineering_lab VALUES($values);";
 
     $replace = mysqli_query($conn,$sql);
 
