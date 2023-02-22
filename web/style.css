@@ -15,7 +15,7 @@ div.header
             background-color: #e6e6e6;
             margin: 3px;
             padding: 3px;
-            width: 3%;
+            width: 36px;
             text-align: center;
         }
         div.header-two{
@@ -23,7 +23,8 @@ div.header
             color: #000000;
             margin: 3px;
             margin-left: 0px;
-            padding: 3px;
+            padding-top: 8px;
+            padding-bottom: 12px;
             font-size: 35px;
             width: 97%;
             text-align: center;
@@ -120,8 +121,7 @@ th , td
 a.header
 {
     position: static;
-    top: 10%;
-    font-size: 36px;
+    font-size: 28px;
    /*border: 1px solid #a1ad21;*/
 }
 
