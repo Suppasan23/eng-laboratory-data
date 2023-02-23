@@ -36,14 +36,18 @@ if($_POST)
     $sql = "INSERT INTO engineering_lab (branch, room, instrument, quantity, caretaker, image)
     VALUES ('$branch', '$room', '$instrument', '$quantity', '$caretaker', '$image');";
 
-    $replace = mysqli_query($conn,$sql);
+    $insert = mysqli_query($conn,$sql);
 
-    if(!$replace)
+    if(!$insert)
     {
+        $success = false;
+        echo "<h3 style = 'color:red'>การเพิ่มข้อมูล เกิดข้อผิดพลาด</h3>";
         echo mysqli_error($conn);
     }
     else
     {
+        $success = true;
+        $show_id = mysqli_insert_id($conn); 
         echo "<h3 style = 'color:green'>ข้อมูลถูกเพิ่มแล้ว</h3>";
         back();
     }
@@ -53,6 +57,7 @@ if($_POST)
 <?php
 function back()
 {
+    $success = false;
     global $conn;
     mysqli_close($conn);
     header("refresh: 2; url=index.php");
@@ -64,31 +69,33 @@ function back()
 <form method="post">
 
     <label>id:</label>
-    <input style="width: 82px; background-color: #e6e6e6" type="text" id="id" name="id" value="" placeholder="ไม่ต้องระบุ" readonly><br>
+    <input style="width: 82px; background-color: #e6e6e6" type="text" id="id" name="id" value="" placeholder="<?php echo $success ? "$show_id" : "ไม่ต้องระบุ"; ?>" readonly><br>
+
+    
 
     <label for="branch">สาขา:</label>
     <select id="branch" name="branch">
-        <option value='โยธา'>โยธา</option>
-        <option value='ไฟฟ้า'>ไฟฟ้า</option>
-        <option value='เครื่องกล'>เครื่องกล</option>
-        <option value='อุตสาหการ'>อุตสาหการ</option>
-        <option value='คอมพิวเตอร์'>คอมพิวเตอร์</option>
+        <option value='โยธา' <?php echo ($success&&($branch == 'โยธา') ? "selected" : ""); ?>>โยธา</option>
+        <option value='ไฟฟ้า' <?php echo ($success&&($branch == 'ไฟฟ้า') ? "selected" : ""); ?>>ไฟฟ้า</option>
+        <option value='เครื่องกล' <?php echo ($success&&($branch == 'เครื่องกล') ? "selected" : ""); ?>>เครื่องกล</option>
+        <option value='อุตสาหการ' <?php echo ($success&&($branch == 'อุตสาหการ') ? "selected" : ""); ?>>อุตสาหการ</option>
+        <option value='คอมพิวเตอร์' <?php echo ($success&&($branch == 'คอมพิวเตอร์') ? "selected" : ""); ?>>คอมพิวเตอร์</option>
     </select><br>
 
   <label for="room">ห้อง:</label>
-  <input type="text" id="room" name="room" value=""><br>
+  <input type="text" id="room" name="room" value="" placeholder="<?php echo $success ? "$room" : "" ; ?>"><br>
 
   <label for="instrument">ชื่ออุปกรณ์:</label>
-  <input type="text" id="instrument" name="instrument" value=""><br>
+  <input type="text" id="instrument" name="instrument" value="" placeholder="<?php echo $success ? "$instrument" : "" ; ?>"><br>
 
   <label for="quantity">จำนวน:</label>
-  <input style="width: 150px;" type="number" id="quantity" name="quantity" value=""><br>
+  <input style="width: 150px;" type="number" id="quantity" name="quantity" value="" placeholder="<?php echo $success ? "$quantity" : "" ; ?>"><br>
 
   <label for="caretaker">ผู้ดูแล:</label>
-  <input type="text" id="caretaker" name="caretaker" value=""><br>
+  <input type="text" id="caretaker" name="caretaker" value="" placeholder="<?php echo $success ? "$caretaker" : "" ; ?>"><br>
 
   <label for="caretaker">รูปภาพ:</label>
-  <input type="text" id="image" name="image" value=""><br><br>
+  <input type="text" id="image" name="image" value="" placeholder="<?php echo $success ? "$image" : "" ; ?>"><br><br>
 
   <div class="button"><button type="submit" value="Submit">ส่งข้อมูล</button>&nbsp;&nbsp;<a class="back" href="index.php">ย้อนกลับ</a></div>
   

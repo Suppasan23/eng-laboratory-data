@@ -12,96 +12,79 @@ session_start();
 <link href="add_edit_delete_style.css" rel="stylesheet" type="text/css">
 </head>
 
-
 <?php
-if(!isset($_SESSION['name'])) {
-	echo "<h3>ท่านยังไม่ได้ทำการล็อคอิน</h3>";
-	Close();
-	}
-
-if(!isset($_GET['action'])) {
-    echo "<h3>กระบวนการไม่ถูกต้อง</h3>";
-    Close();
-    }
-
-if(isset($_GET['action']))
-{
-    $action = $_GET['action'];
-    $id = $_GET['id'];
-
-    $conn = new mysqli("db","root","root","laboratory_system");
-	if ($conn->connect_error){die("Connection failed: " . $conn->connect_error);}// Check connection
-
-
-    if($action == "insert") //ถ้า Action เป็นการเพิ่ม
+if(isset($_SESSION['name'])&&isset($_GET['id'])) 
     {
-        $h = "เพิ่มข้อมูล";
-    }
-	else if($action == "edit") //ถ้า Action เป็นการแก้ไขข้อมูล ต้องอ่านข้อมูลเดิมมาเติมลงในฟอร์ม
-    {
-        $h = "แก้ไขข้อมูล";
-        $sql = "SELECT * FROM engineering_lab WHERE id = $id";
+        $key_id = $_GET['id'];
+
+        $conn = new mysqli("db","root","root","laboratory_system");
+        if ($conn->connect_error){die("Connection failed: " . $conn->connect_error);}// Check connection
+
+        $sql = "SELECT * FROM engineering_lab WHERE id = $key_id";
         $result = mysqli_query($conn, $sql);
         $data = mysqli_fetch_array($result);
     }
-	else if($action == "delete") //ถ้า Action เป็นการลบ ก็นำค่า id ไปกำหนดเป็นเงื่อนไขการลบ
+    else
     {
-        $sql = "DELETE FROM engineering_lab WHERE id = $id";
-        $delete = mysqli_query($conn , $sql);
-        if(!$delete)
-            {
-                echo mysqli_error($conn);
-            }
-            else
-            {
-                echo "<h3>ข้อมูลถูกลบแล้ว</h3>";
-                back();
-            }
+        echo "<h3>กระบวนการไม่ถูกต้อง</h3>";
+        back();
     }
-}
 ?>
+
 
 <?php
 if($_POST['id'])
 {
+    $id = $_POST['id'];
+    $branch = $_POST['branch'];
+    $room = $_POST['room'];
+    $instrument = $_POST['instrument'];
+    $quantity = $_POST['quantity'];
+    $caretaker = $_POST['caretaker'];
+    $image = $_POST['image'];
+
 	$conn = new mysqli("db","root","root","laboratory_system");// Create connection
 	if ($conn->connect_error){die("Connection failed: " . $conn->connect_error);}// Check connection
 
-    $values = implode("', '", $_POST);
-    $values = "'".$values."'";
-
-    $sql = "REPLACE INTO engineering_lab VALUES($values);";
+    $sql = "REPLACE INTO engineering_lab (id, branch, room, instrument, quantity, caretaker, image)
+    VALUES ('$id', '$branch', '$room', '$instrument', '$quantity', '$caretaker', '$image');";
 
     $replace = mysqli_query($conn,$sql);
 
     if(!$replace)
     {
+        $success = false;
+        echo "<h3 style = 'color:red'>การเพิ่มข้อมูล เกิดข้อผิดพลาด</h3>";
         echo mysqli_error($conn);
     }
     else
     {
-        echo "<h3 style = 'color:green'>ข้อมูลถูกเพิ่มแล้ว</h3>";
+        $success = true;
+        $show_id = mysqli_insert_id($conn); 
+        echo "<h3 style = 'color:green'>ข้อมูลถูกแก้ไขแล้ว</h3>";
         back();
     }
-
 }
 ?>
+
 
 <?php
 function back()
 {
+    $success = false;
     global $conn;
     mysqli_close($conn);
-    header("refresh: 1; url=index.php");
+    header("refresh: 2; url=index.php");
 }
 //mysqli_close($conn)
 ?>
 
-<fieldset><legend><?php echo $h; ?></legend>
+
+<fieldset><legend>แก้ไขข้อมูล</legend>
 <form method="post">
 
     <label>id:</label>
-    <input style="width: 82px;" type="text" id="id" name="id" value="<?php echo $data['id']; ?>" placeholder="<?php echo (empty($data['id']) ? "ไม่ต้องระบุ" : $data['id']); ?>" disabled><br>
+    <input style="width: 82px; background-color: #e6e6e6" type="text" id="id" name="id" value="<?php echo $data['id']; ?>" readonly><br>
 
     <label for="branch">สาขา:</label>
     <select id="branch" name="branch">
