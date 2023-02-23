@@ -53,14 +53,18 @@ if($_POST['id'])
 
     if(!$replace)
     {
-        $success = false;
         echo "<h3 style = 'color:red'>การเพิ่มข้อมูล เกิดข้อผิดพลาด</h3>";
         echo mysqli_error($conn);
     }
     else
     {
-        $success = true;
+
         $show_id = mysqli_insert_id($conn); 
+
+        $sql = "SELECT * FROM engineering_lab WHERE id = $show_id";
+        $result = mysqli_query($conn, $sql);
+        $data = mysqli_fetch_array($result);
+
         echo "<h3 style = 'color:green'>ข้อมูลถูกแก้ไขแล้ว</h3>";
         back();
     }
@@ -71,7 +75,7 @@ if($_POST['id'])
 <?php
 function back()
 {
-    $success = false;
+    $data = "";
     global $conn;
     mysqli_close($conn);
     header("refresh: 2; url=index.php");
