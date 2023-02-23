@@ -8,10 +8,10 @@ session_start();
 <title>Engineering Laboratory</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link href="style.css" rel="stylesheet" type="text/css">
+<link href="index_style.css" rel="stylesheet" type="text/css">
 </head>
 
-<body>
+<body class="for_index.php">
 
 <div class="header">
     <div class="header-one"><img src="..\picture\universitylogo.png" alt="universitylogo" width="30" height="52"></div>

@@ -48,7 +48,7 @@ session_start();
             echo "<th>ผู้รับผิดชอบ</th>";
             if(isset($_SESSION['name'])) 
             {	
-                echo "<th style='width: 80px;'><a class='additem' href='update.php?action=insert'>เพิ่มข้อมูล</a></th>";
+                echo "<th style='width: 80px;'><a class='additem' href='add.php'>เพิ่มข้อมูล</a></th>";
             }
             echo "</tr>";
                 
@@ -68,8 +68,8 @@ session_start();
                     {		
                         $id = $dataParameter[$i]->id; 
                         echo "<td style='width: 80px;'>
-                                <a href='update.php?action=edit&id=".$id."'>แก้ไข</a> |
-                                <a style = 'color:red'; href='update.php?action=delete&id=".$id."'>ลบ</a>
+                                <a href='edit.php?id=".$id."'>แก้ไข</a> |
+                                <a style = 'color:red'; href='delete.php?id=".$id."'>ลบ</a>
                             </td>";
                     }
                     echo "</tr>";
@@ -82,6 +82,3 @@ session_start();
             }
         }
 ?>
-
-
-<script src="javascript.js"></script>
