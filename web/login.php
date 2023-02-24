@@ -74,7 +74,7 @@ if($_POST)
 ?>
 	    <div align="center"><h3 style="color:green">ท่านได้เข้าสู่ระบบแล้ว จะกลับสู่หน้าหลักใน 1 วินาที</h3><div>
 		<?php 
-			header("refresh:1;url=index.php");  
+			header("refresh:1.5;url=index.php");  
 		?>
 <?php
 	}

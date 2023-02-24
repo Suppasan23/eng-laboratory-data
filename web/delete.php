@@ -34,14 +34,22 @@ if(isset($_SESSION['name'])&&isset($_GET['id']))
 <?php
 if($_POST['id'])
 {
-    $id = $_GET['id'];
 
-    $conn = new mysqli("db","root","root","laboratory_system");
-    if ($conn->connect_error){die("Connection failed: " . $conn->connect_error);}// Check connection
+    $filename = $_POST['file'];
+    $filepath = "../picture/" . $filename;
 
-    $sql = "DELETE FROM engineering_lab WHERE id = $id";
-    $delete = mysqli_query($conn , $sql);
-    if(!$delete)
+    if (file_exists($filepath)) 
+    {
+        unlink($filepath);
+
+        $id = $_POST['id'];
+
+        $conn = new mysqli("db","root","root","laboratory_system");
+        if ($conn->connect_error){die("Connection failed: " . $conn->connect_error);}// Check connection
+
+        $sql = "DELETE FROM engineering_lab WHERE id = $id";
+        $delete = mysqli_query($conn , $sql);
+        if(!$delete)
         {
             $success = false;
             echo mysqli_error($conn);
@@ -52,6 +60,13 @@ if($_POST['id'])
             echo "<h3>ข้อมูลถูกลบแล้ว</h3>";
             back();
         }
+    } 
+    else 
+    {
+        echo "File '$filename' does not exist.";
+    }
+
+    
 }
 ?>
 
@@ -61,7 +76,7 @@ function back()
     $success = false;
     global $conn;
     mysqli_close($conn);
-    header("refresh: 2; url=index.php");
+    header("refresh: 1.5; url=index.php");
 }
 //mysqli_close($conn)
 ?>
@@ -90,11 +105,12 @@ function back()
   <label for="caretaker">ผู้ดูแล:</label>
   <input style="background-color: #e6e6e6;" type="text" id="caretaker" name="caretaker" value="<?php echo $success ? "" : $data['caretaker'] ; ?>" readonly><br>
 
-  <label for="caretaker">รูปภาพ:</label>
-  <input style="background-color: #e6e6e6;" type="text" id="image" name="image" value="<?php echo $success ? "" : $data['image'] ; ?>" readonly><br><br>
+  <label for="file">รูปภาพ:</label>
+  &nbsp;<img id="file" src="<?php echo $success ? "-" : '../picture/'.$data["image"]; ?>" width="200" style="display: inline-block; vertical-align: top;"><br><br>
+  <input type="hidden" id="file" name="file" value="<?php echo $success ? "" : $data['image'] ; ?>" readonly>
 
   <div class="button"><button type="submit" value="Submit">ลบข้อมูล</button>&nbsp;&nbsp;<a class="back" href="index.php">ย้อนกลับ</a></div>
-  
+ 
   
 </form> 
 </fieldset>

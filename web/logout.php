@@ -3,7 +3,7 @@ session_start();
 session_destroy();
 
 
-header("refresh: 1; url=index.php");
+header("refresh: 1.5; url=index.php");
 ?>
 <!doctype html>
 <html>

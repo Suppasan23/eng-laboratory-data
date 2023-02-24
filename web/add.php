@@ -13,7 +13,7 @@ session_start();
 </head>
 
 <?php
-if(!isset($_SESSION['name'])) 
+if(!isset($_SESSION['name']))
     {
         echo "<h3>กระบวนการไม่ถูกต้อง</h3>";
         back();
@@ -33,14 +33,16 @@ if(isset($_POST['submit']))
 
     // get file extension
     $file_ext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
-
     // allowed extensions
     $allowed = array('jpg', 'jpeg', 'png', 'gif', 'webp');
 
-    if(in_array($file_ext, $allowed)) {
-        if($file_error === 0) {
-            if($file_size <= 1000000) 
+    if(in_array($file_ext, $allowed)) 
+    {
+        if($file_error === 0) 
+        {
+            if($file_size <= 5000000) 
             {
+
                 // create new unique file name to avoid overwrite
                 $new_file_name = uniqid('', true) . '.' . $file_ext;
 
@@ -48,41 +50,42 @@ if(isset($_POST['submit']))
                 $file_destination = '../picture/' . $new_file_name;
 
                 // move file to directory
-                move_uploaded_file($file_tmp, $file_destination);
-               
+                if (move_uploaded_file($file_tmp, $file_destination))
+                {
+                    $branch = $_POST['branch'];
+                    $room = $_POST['room'];
+                    $instrument = $_POST['instrument'];
+                    $quantity = $_POST['quantity'];
+                    $caretaker = $_POST['caretaker'];
+                    $image = $_FILES['image']['name'];
+                
+                    $conn = new mysqli("db","root","root","laboratory_system");// Create connection
+                    if ($conn->connect_error){die("Connection failed: " . $conn->connect_error);}// Check connection
+                
+                    $sql = "INSERT INTO engineering_lab (branch, room, instrument, quantity, caretaker, image)
+                    VALUES ('$branch', '$room', '$instrument', '$quantity', '$caretaker', '$new_file_name');";
+                
+                    $insert = mysqli_query($conn,$sql);
+                
+                    if(!$insert)
+                    {
+                        $success = false;
+                        echo "<h3 style = 'color:red'>การเพิ่มข้อมูล เกิดข้อผิดพลาด</h3>";
+                        echo mysqli_error($conn);
+                    }
+                    else
+                    {
+                        $success = true;
+                        $show_id = mysqli_insert_id($conn); 
+                        echo "<h3 style = 'color:green'>ข้อมูลถูกเพิ่มแล้ว</h3>";
+                        back();
+                    }
+
+                } else {echo "Failed to save the image.";}
             } else {echo "File size is too large.";}
         } else {echo "Error uploading file.";}
-    } else {echo "อนุญาติเฉพาะไฟล์ 'jpg', 'jpeg', 'png', 'gif', 'webp' เท่านั้น";}
+    } else {echo "ต้องใส่ไฟล์รูปภาพที่มีนามสกุล 'jpg', 'jpeg', 'png', 'gif' หรือ 'webp' เท่านั้น";}
 
-    $branch = $_POST['branch'];
-    $room = $_POST['room'];
-    $instrument = $_POST['instrument'];
-    $quantity = $_POST['quantity'];
-    $caretaker = $_POST['caretaker'];
-    $image = $_FILES['image']['name'];
-
-    $conn = new mysqli("db","root","root","laboratory_system");// Create connection
-    if ($conn->connect_error){die("Connection failed: " . $conn->connect_error);}// Check connection
-
-    $sql = "INSERT INTO engineering_lab (branch, room, instrument, quantity, caretaker, image)
-    VALUES ('$branch', '$room', '$instrument', '$quantity', '$caretaker', '$new_file_name');";
-
-    $insert = mysqli_query($conn,$sql);
-
-    if(!$insert)
-    {
-        $success = false;
-        echo "<h3 style = 'color:red'>การเพิ่มข้อมูล เกิดข้อผิดพลาด</h3>";
-        echo mysqli_error($conn);
-    }
-    else
-    {
-        $success = true;
-        $show_id = mysqli_insert_id($conn); 
-        echo "<h3 style = 'color:green'>ข้อมูลถูกเพิ่มแล้ว</h3>";
-        back();
-    }
-    
 }
 ?>
 
@@ -92,7 +95,7 @@ function back()
     $success = false;
     global $conn;
     mysqli_close($conn);
-    header("refresh: 2; url=index.php");
+    header("refresh: 1.5; url=index.php");
 }
 //mysqli_close($conn)
 ?>

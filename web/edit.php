@@ -1,4 +1,4 @@
-<?php 
+<?php
 ob_start();
 session_start(); 
 ?>
@@ -78,7 +78,7 @@ function back()
     $data = "";
     global $conn;
     mysqli_close($conn);
-    header("refresh: 2; url=index.php");
+    header("refresh: 1.5; url=index.php");
 }
 //mysqli_close($conn)
 ?>
@@ -112,7 +112,10 @@ function back()
   <input type="text" id="caretaker" name="caretaker" value="<?php echo $data['caretaker']; ?>"><br>
 
   <label for="caretaker">รูปภาพ:</label>
+  <input type="file" id="file" name="file"><br><br>
   <input type="text" id="image" name="image" value="<?php echo $data['image']; ?>"><br><br>
+  &nbsp;<img id="file" src="<?php echo $success ? "-" : '../picture/'.$data["image"]; ?>" width="200" style="display: inline-block; vertical-align: top;"><br><br>
+  <input type="hidden" id="file" name="file" value="<?php echo $success ? "" : $data['image'] ; ?>" readonly>
 
   <div class="button"><button type="submit" value="Submit">ส่งข้อมูล</button>&nbsp;&nbsp;<a class="back" href="index.php">ย้อนกลับ</a></div>
   
