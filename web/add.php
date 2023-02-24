@@ -99,7 +99,7 @@ function back()
 ?>
 
 <fieldset><legend>เพิ่มข้อมูล</legend>
-<form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST" enctype="multipart/form-data">
+<form method="POST" enctype="multipart/form-data">
 
     <label>id:</label>
     <input style="width: 82px; background-color: #e6e6e6" type="text" id="id" name="id" value="" placeholder="<?php echo $success ? "$show_id" : "ไม่ต้องระบุ"; ?>" readonly><br>

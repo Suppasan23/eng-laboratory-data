@@ -13,23 +13,23 @@ session_start();
 </head>
 
 <?php
-if(isset($_SESSION['name'])&&isset($_GET['key_id'])) 
-    {
-        $key_id = $_GET['key_id'];
+if(isset($_SESSION['name'])) 
+{
+    $key_id = $_GET['key_id'];
 
-        $conn = new mysqli("db","root","root","laboratory_system");
-        if ($conn->connect_error){die("Connection failed: " . $conn->connect_error);}// Check connection
+    $conn = new mysqli("db","root","root","laboratory_system");// Create connection
+    if ($conn->connect_error){die("Connection failed: " . $conn->connect_error);}// Check connection
 
-        $sql = "SELECT * FROM engineering_lab WHERE id = $key_id";
-        $result = mysqli_query($conn, $sql);
-        $data = mysqli_fetch_array($result);
-        mysqli_close($conn);
-    }
-    else
-    {
-        echo "<h3>กระบวนการไม่ถูกต้อง</h3>";
-        back();
-    }
+    $sql = "SELECT * FROM engineering_lab WHERE id = $key_id";
+    $result = mysqli_query($conn, $sql);
+    $data = mysqli_fetch_array($result);
+    mysqli_close($conn);
+}
+else    
+{
+    echo "<h3>กระบวนการไม่ถูกต้อง</h3>";
+    back();
+}
 ?>
 
 <?php

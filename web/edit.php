@@ -13,23 +13,23 @@ session_start();
 </head>
 
 <?php
-if(isset($_SESSION['name'])&&isset($_GET['key_id'])) 
-    {
-        $key_id = $_GET['key_id'];
+if(isset($_SESSION['name'])) 
+{
+    $key_id = $_GET['key_id'];
 
-        $conn = new mysqli("db","root","root","laboratory_system");// Create connection
-        if ($conn->connect_error){die("Connection failed: " . $conn->connect_error);}// Check connection
+    $conn = new mysqli("db","root","root","laboratory_system");// Create connection
+    if ($conn->connect_error){die("Connection failed: " . $conn->connect_error);}// Check connection
 
-        $sql = "SELECT * FROM engineering_lab WHERE id = $key_id";
-        $result = mysqli_query($conn, $sql);
-        $data = mysqli_fetch_array($result);
-        mysqli_close($conn);
-    }
-    else
-    {
-        echo "<h3>กระบวนการไม่ถูกต้อง</h3>";
-        back();
-    }
+    $sql = "SELECT * FROM engineering_lab WHERE id = $key_id";
+    $result = mysqli_query($conn, $sql);
+    $data = mysqli_fetch_array($result);
+    mysqli_close($conn);
+}
+else    
+{
+    echo "<h3>กระบวนการไม่ถูกต้อง</h3>";
+    back();
+}
 ?>
 
 <?php
@@ -52,7 +52,7 @@ if($_POST['id'])
 
         if(in_array($file_ext, $allowed)) 
         {
-            if($file_error === 0) 
+            if($file_error === 0)
             {
                 if($file_size <= 5000000) 
                 {
@@ -130,13 +130,12 @@ function replace_to_database($image_name_parameter)
 function back()
 {
     $data = "";
-    header("refresh: 20; url=index.php");
+    header("refresh: 1.5; url=index.php");
 }
 ?>
 
-
 <fieldset><legend>แก้ไขข้อมูล</legend>
-<form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST" enctype="multipart/form-data">
+<form method="POST" enctype="multipart/form-data">
 
     <label>id:</label>
     <input style="width: 82px; background-color: #e6e6e6" type="text" id="id" name="id" value="<?php echo $data['id']; ?>" readonly><br>
