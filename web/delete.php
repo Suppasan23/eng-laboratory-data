@@ -77,7 +77,7 @@ if($_POST['id'])
 function back()
 {
     $success = false;
-    header("refresh: 1.5; url=index.php");
+    header("refresh: 1; url=index.php");
 }
 ?>
 

@@ -105,18 +105,28 @@ button.btn
 table
 {
     width: 100%;
-    border-collapse: collapse;
+    border-collapse: collapse;  
     font-size: 14px;
 }
 
-th , td 
+th
 {
     width: auto;
     border: 1px solid;
     border-collapse: collapse;
     padding: 6px;
-    text-align: center;
     font-size: 14px;
+}
+
+td
+{
+    width: auto;
+    border: 1px solid;
+    border-collapse: collapse;
+    padding: 6px;
+    font-size: 14px;
+    text-align: center;
+    vertical-align: top;
 }
 
 a.header

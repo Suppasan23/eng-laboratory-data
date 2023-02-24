@@ -130,7 +130,7 @@ function replace_to_database($image_name_parameter)
 function back()
 {
     $data = "";
-    header("refresh: 1.5; url=index.php");
+    header("refresh: 1; url=index.php");
 }
 ?>
 

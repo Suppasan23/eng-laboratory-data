@@ -40,16 +40,16 @@ session_start();
         {
             echo "<table>";
             echo "<tr>";
-            echo "<th>ที่</th>";
+            echo "<th style='width: 25px;'>ที่</th>";
             echo "<th>สาขา</th>";
             echo "<th>ห้อง</th>";
             echo "<th>อุปกรณ์</th>";
             echo "<th>จำนวน</th>";
             echo "<th>ผู้รับผิดชอบ</th>";
-            echo "<th style='width: 260px;'>รูปภาพ</th>";
+            echo "<th style='width: 250px;'>รูปภาพ</th>";
             if(isset($_SESSION['name'])) 
             {	
-                echo "<th style='width: 80px;'><a class='additem' href='add.php'>เพิ่มข้อมูล</a></th>";
+                echo "<th style='width: 78px;'><a class='additem' href='add.php'>เพิ่มข้อมูล</a></th>";
             }
             echo "</tr>";
                 
@@ -64,14 +64,14 @@ session_start();
                     echo "<td>".$dataParameter[$i]->instrument."</td>";
                     echo "<td>".$dataParameter[$i]->quantity."</td>";
                     echo "<td>".$dataParameter[$i]->caretaker."</td>";
-                    echo "<td style='width: 260px;'><img src='../picture/".$dataParameter[$i]->image."' width='250'></td>";
+                    echo "<td><img src='../picture/".$dataParameter[$i]->image."' width='250'></td>";
 
                     
 
                     if(isset($_SESSION['name'])) 
                     {		
                         $id = $dataParameter[$i]->id; 
-                        echo "<td style='width: 80px;'>
+                        echo "<td>
                                 <a href='edit.php?key_id=".$id."'>แก้ไข</a> |
                                 <a style = 'color:red'; href='delete.php?key_id=".$id."'>ลบ</a>
                             </td>";

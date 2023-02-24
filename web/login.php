@@ -46,14 +46,14 @@ if($_POST)
 ?>
 
     <div align = "center">
-    <div style = "width:440px; height:230px; border: solid 1px #000000; background: #f2f2f2; border-radius: 4px; " align = "Right">
+    <div style = "width:420px; height:230px; border: solid 1px #000000; background: #f2f2f2; border-radius: 4px; " align = "Right">
     <div style = "background-color:#000000; color:#FFFFFF; padding:8px;" align = "Left"><b style = "font-size:18px;">เข้าสู่ระบบ</b></div>
-	<div align = "right" style = "margin-top: 3px;"><a style = "font-size:26px; margin-right: 45px; ">โปรดใส่รหัสผ่านผู้ดูแลระบบ</a></div><br/>
+	<div align = "right" style = "margin-top: 3px;"><a style = "font-size:26px; margin-right: 45px; ">โปรดใส่รหัสผู้ดูแลระบบ</a></div><br/>
    
     <div align = "right" style = "margin-right: 45px;">
 	<form method="post">
 		
-  		<label style = "font-size:20px;">User :</label>  <input style = "font-size:20px;" type="text" name="input_user" required><br><br>
+  		<label style = "font-size:20px;">User :</label>  <input style = "font-size:20px;" type="text" name="input_user" required><br/><p style="margin: 2px;"></p>
     	<label style = "font-size:20px;">Password :</label>  <input style = "font-size:20px;" type="password" name="input_pswd" required><br><br>
     	<button style = "width:65px; height:38px; font-size:20px;">Login</button>
 		&nbsp;
