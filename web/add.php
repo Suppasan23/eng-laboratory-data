@@ -21,20 +21,51 @@ if(!isset($_SESSION['name']))
 ?>
 
 <?php
-if($_POST)
+if(isset($_POST['submit'])) 
 {
+    $file = $_FILES['file'];
+
+    // file properties
+    $file_name = $file['name'];
+    $file_tmp = $file['tmp_name'];
+    $file_size = $file['size'];
+    $file_error = $file['error'];
+
+    // get file extension
+    $file_ext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
+
+    // allowed extensions
+    $allowed = array('jpg', 'jpeg', 'png', 'gif', 'webp');
+
+    if(in_array($file_ext, $allowed)) {
+        if($file_error === 0) {
+            if($file_size <= 1000000) 
+            {
+                // create new unique file name to avoid overwrite
+                $new_file_name = uniqid('', true) . '.' . $file_ext;
+
+                // file directory
+                $file_destination = '../picture/' . $new_file_name;
+
+                // move file to directory
+                move_uploaded_file($file_tmp, $file_destination);
+               
+            } else {echo "File size is too large.";}
+        } else {echo "Error uploading file.";}
+    } else {echo "อนุญาติเฉพาะไฟล์ 'jpg', 'jpeg', 'png', 'gif', 'webp' เท่านั้น";}
+
     $branch = $_POST['branch'];
     $room = $_POST['room'];
     $instrument = $_POST['instrument'];
     $quantity = $_POST['quantity'];
     $caretaker = $_POST['caretaker'];
-    $image = $_POST['image'];
+    $image = $_FILES['image']['name'];
 
-	$conn = new mysqli("db","root","root","laboratory_system");// Create connection
-	if ($conn->connect_error){die("Connection failed: " . $conn->connect_error);}// Check connection
+    $conn = new mysqli("db","root","root","laboratory_system");// Create connection
+    if ($conn->connect_error){die("Connection failed: " . $conn->connect_error);}// Check connection
 
     $sql = "INSERT INTO engineering_lab (branch, room, instrument, quantity, caretaker, image)
-    VALUES ('$branch', '$room', '$instrument', '$quantity', '$caretaker', '$image');";
+    VALUES ('$branch', '$room', '$instrument', '$quantity', '$caretaker', '$new_file_name');";
 
     $insert = mysqli_query($conn,$sql);
 
@@ -51,6 +82,7 @@ if($_POST)
         echo "<h3 style = 'color:green'>ข้อมูลถูกเพิ่มแล้ว</h3>";
         back();
     }
+    
 }
 ?>
 
@@ -66,12 +98,10 @@ function back()
 ?>
 
 <fieldset><legend>เพิ่มข้อมูล</legend>
-<form method="post">
+<form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST" enctype="multipart/form-data">
 
     <label>id:</label>
     <input style="width: 82px; background-color: #e6e6e6" type="text" id="id" name="id" value="" placeholder="<?php echo $success ? "$show_id" : "ไม่ต้องระบุ"; ?>" readonly><br>
-
-    
 
     <label for="branch">สาขา:</label>
     <select id="branch" name="branch">
@@ -94,10 +124,10 @@ function back()
   <label for="caretaker">ผู้ดูแล:</label>
   <input type="text" id="caretaker" name="caretaker" value="" placeholder="<?php echo $success ? "$caretaker" : "" ; ?>"><br>
 
-  <label for="caretaker">รูปภาพ:</label>
-  <input type="text" id="image" name="image" value="" placeholder="<?php echo $success ? "$image" : "" ; ?>"><br><br>
+  <label for="file">รูปภาพ:</label>
+  <input type="file" id="file" name="file"><br><br>
 
-  <div class="button"><button type="submit" value="Submit">ส่งข้อมูล</button>&nbsp;&nbsp;<a class="back" href="index.php">ย้อนกลับ</a></div>
+  <div class="button"><button type="submit" value="Submit" name="submit">ส่งข้อมูล</button>&nbsp;&nbsp;<a class="back" href="index.php">ย้อนกลับ</a></div>
   
   
 </form> 

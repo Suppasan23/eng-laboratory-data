@@ -15,7 +15,7 @@ session_start();
 
 <div class="header">
     <div class="header-one"><img src="..\picture\universitylogo.png" alt="universitylogo" width="30" height="52"></div>
-    <div class="header-two"><a class="header">ระบบข้อมูลห้องปฏบัติการคณะวิศวกรรมศาสตร์ (Engineering Laboratory)</a></div>
+    <div class="header-two"><a class="header">ระบบข้อมูลห้องปฏิบัติการคณะวิศวกรรมศาสตร์ (Engineering Laboratory)</a></div>
     <div class="login">
 
         <?php 

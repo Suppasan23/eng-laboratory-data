@@ -46,6 +46,7 @@ session_start();
             echo "<th>อุปกรณ์</th>";
             echo "<th>จำนวน</th>";
             echo "<th>ผู้รับผิดชอบ</th>";
+            echo "<th style='width: 260px;'>รูปภาพ</th>";
             if(isset($_SESSION['name'])) 
             {	
                 echo "<th style='width: 80px;'><a class='additem' href='add.php'>เพิ่มข้อมูล</a></th>";
@@ -63,6 +64,9 @@ session_start();
                     echo "<td>".$dataParameter[$i]->instrument."</td>";
                     echo "<td>".$dataParameter[$i]->quantity."</td>";
                     echo "<td>".$dataParameter[$i]->caretaker."</td>";
+                    echo "<td style='width: 260px;'><img src='../picture/".$dataParameter[$i]->image."' width='250'></td>";
+
+                    
 
                     if(isset($_SESSION['name'])) 
                     {		
