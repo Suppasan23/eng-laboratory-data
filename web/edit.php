@@ -35,15 +35,19 @@ else
 <?php
 if($_POST['id'])
 {
-    if($_FILES['new_pic'])
-    {
-        $file = $_FILES['new_pic'];
 
-        // file properties
-        $file_name = $file['name'];
-        $file_tmp = $file['tmp_name'];
-        $file_size = $file['size'];
-        $file_error = $file['error'];
+    $file = $_FILES['new_pic'];
+    // New file properties
+    $file_name = $file['name'];
+    $file_tmp = $file['tmp_name'];
+    $file_size = $file['size'];
+    $file_error = $file['error'];
+
+    //Old file properties
+    $old_file = $_POST['old_pic'];
+
+    if(!empty($file_name))
+    {
 
         // get file extension
         $file_ext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
@@ -62,11 +66,19 @@ if($_POST['id'])
                     // file directory
                     $file_destination = '../picture/' . $new_file_name;
 
-                    if (move_uploaded_file($file_tmp, $file_destination))
+                    if (move_uploaded_file($file_tmp, $file_destination)) //เพิ่มภาพใหม่เข้าไปใน Directory
                     {
 
-                        replace_to_database($new_file_name);
+                        $filepath = "../picture/" . $old_file; //path ของไฟล์ภาพเก่า
 
+                        if (file_exists($filepath)) //เช็คว่า path ของไฟล์ภาพเก่ามีอยู่จริงไหม
+                        {
+
+                            unlink($filepath); //ลบไฟล์ภาพเก่าทิ้ง
+                            replace_to_database($new_file_name); //ส่งชื่อไฟล์ภาพใหม่ไปให้ฟังก์ชั่นที่ทำหน้าที่บันทึกมันลงฐานข้อมูล
+
+                        }
+                        else {echo "File '$filename' does not exist.";}
                     }
                     else {echo "Failed to save the image.";}
                 } 
@@ -79,8 +91,7 @@ if($_POST['id'])
     else
     {
 
-        $old_file_name = $_POST['old_pic'];
-        replace_to_database($old_file_name);
+        replace_to_database($old_file);
 
     }
 }
@@ -172,7 +183,7 @@ function back()
 
   <div class="button"><button type="submit" value="Submit">ส่งข้อมูล</button>&nbsp;&nbsp;<a class="back" href="index.php">ย้อนกลับ</a></div>
   
-</form> 
+</form>
 </fieldset>
 
 </body>
