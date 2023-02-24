@@ -13,9 +13,9 @@ session_start();
 </head>
 
 <?php
-if(isset($_SESSION['name'])&&isset($_GET['id'])) 
+if(isset($_SESSION['name'])&&isset($_GET['key_id'])) 
     {
-        $key_id = $_GET['id'];
+        $key_id = $_GET['key_id'];
 
         $conn = new mysqli("db","root","root","laboratory_system");
         if ($conn->connect_error){die("Connection failed: " . $conn->connect_error);}// Check connection
@@ -23,6 +23,7 @@ if(isset($_SESSION['name'])&&isset($_GET['id']))
         $sql = "SELECT * FROM engineering_lab WHERE id = $key_id";
         $result = mysqli_query($conn, $sql);
         $data = mysqli_fetch_array($result);
+        mysqli_close($conn);
     }
     else
     {
@@ -53,10 +54,12 @@ if($_POST['id'])
         {
             $success = false;
             echo mysqli_error($conn);
+            mysqli_close($conn);
         }
         else
         {
             $success = true;
+            mysqli_close($conn);
             echo "<h3>ข้อมูลถูกลบแล้ว</h3>";
             back();
         }
@@ -74,11 +77,8 @@ if($_POST['id'])
 function back()
 {
     $success = false;
-    global $conn;
-    mysqli_close($conn);
     header("refresh: 1.5; url=index.php");
 }
-//mysqli_close($conn)
 ?>
 
 <fieldset><legend><?php echo $success ? "" : "คุณต้องการลบข้อมูลต่อไปนี้ใช่หรือไม่?" ; ?></legend>
@@ -106,12 +106,11 @@ function back()
   <input style="background-color: #e6e6e6;" type="text" id="caretaker" name="caretaker" value="<?php echo $success ? "" : $data['caretaker'] ; ?>" readonly><br>
 
   <label for="file">รูปภาพ:</label>
-  &nbsp;<img id="file" src="<?php echo $success ? "-" : '../picture/'.$data["image"]; ?>" width="200" style="display: inline-block; vertical-align: top;"><br><br>
+  &nbsp;<img src="<?php echo $success ? "-" : '../picture/'.$data["image"]; ?>" width="200" style="display: inline-block; vertical-align: top;"><br><br>
   <input type="hidden" id="file" name="file" value="<?php echo $success ? "" : $data['image'] ; ?>" readonly>
 
   <div class="button"><button type="submit" value="Submit">ลบข้อมูล</button>&nbsp;&nbsp;<a class="back" href="index.php">ย้อนกลับ</a></div>
  
-  
 </form> 
 </fieldset>
 

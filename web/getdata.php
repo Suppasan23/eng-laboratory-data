@@ -72,8 +72,8 @@ session_start();
                     {		
                         $id = $dataParameter[$i]->id; 
                         echo "<td style='width: 80px;'>
-                                <a href='edit.php?id=".$id."'>แก้ไข</a> |
-                                <a style = 'color:red'; href='delete.php?id=".$id."'>ลบ</a>
+                                <a href='edit.php?key_id=".$id."'>แก้ไข</a> |
+                                <a style = 'color:red'; href='delete.php?key_id=".$id."'>ลบ</a>
                             </td>";
                     }
                     echo "</tr>";

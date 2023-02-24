@@ -57,7 +57,6 @@ if(isset($_POST['submit']))
                     $instrument = $_POST['instrument'];
                     $quantity = $_POST['quantity'];
                     $caretaker = $_POST['caretaker'];
-                    $image = $_FILES['image']['name'];
                 
                     $conn = new mysqli("db","root","root","laboratory_system");// Create connection
                     if ($conn->connect_error){die("Connection failed: " . $conn->connect_error);}// Check connection
@@ -72,11 +71,13 @@ if(isset($_POST['submit']))
                         $success = false;
                         echo "<h3 style = 'color:red'>การเพิ่มข้อมูล เกิดข้อผิดพลาด</h3>";
                         echo mysqli_error($conn);
+                        mysqli_close($conn);
                     }
                     else
                     {
                         $success = true;
                         $show_id = mysqli_insert_id($conn); 
+                        mysqli_close($conn);
                         echo "<h3 style = 'color:green'>ข้อมูลถูกเพิ่มแล้ว</h3>";
                         back();
                     }
@@ -93,11 +94,8 @@ if(isset($_POST['submit']))
 function back()
 {
     $success = false;
-    global $conn;
-    mysqli_close($conn);
     header("refresh: 1.5; url=index.php");
 }
-//mysqli_close($conn)
 ?>
 
 <fieldset><legend>เพิ่มข้อมูล</legend>
