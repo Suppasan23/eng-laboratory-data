@@ -126,7 +126,7 @@ function replace_to_database($image_name_parameter)
             $data = mysqli_fetch_array($result);
             mysqli_close($conn);
     
-            echo "<h3 style = 'color:green'>ข้อมูลถูกแก้ไขแล้ว</h3>";
+            echo "<h3 style='color:#0000b3;'>ข้อมูลถูกแก้ไขแล้ว</h3>";
             back();
         }
     }
@@ -140,7 +140,7 @@ function back()
 }
 ?>
 
-<fieldset><legend>แก้ไขข้อมูล</legend>
+<fieldset><legend><h3 style="color:#0000b3;">แก้ไขข้อมูล</h3></legend>
 <form method="POST" enctype="multipart/form-data">
 
     <label>id:</label>
@@ -176,7 +176,7 @@ function back()
   <label for="new_pic">เปลี่ยนรูป:</label>
   <input type="file" id="new_pic" name="new_pic"><br><br>
 
-  <div class="button"><button type="submit" value="Submit">ส่งข้อมูล</button>&nbsp;&nbsp;<a class="back" href="index.php">ย้อนกลับ</a></div>
+  <div class="button"><button type="submit" value="Submit" name="submit">ส่งข้อมูล</button>&nbsp;&nbsp;<a class="back" href="index.php">ย้อนกลับ</a></div>
   
 </form>
 </fieldset>
