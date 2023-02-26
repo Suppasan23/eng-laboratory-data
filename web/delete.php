@@ -33,41 +33,35 @@ else
 ?>
 
 <?php
-if($_POST['id'])
+if(isset($_POST['submit'])) 
 {
 
     $filename = $_POST['file'];
     $filepath = "../picture/" . $filename;
 
-    if (file_exists($filepath)) 
+    unlink($filepath);
+
+    $id = $_POST['id'];
+
+    $conn = new mysqli("db","root","root","laboratory_system");// Create connection
+    if ($conn->connect_error){die("Connection failed: " . $conn->connect_error);}// Check connection
+
+    $sql = "DELETE FROM engineering_lab WHERE id = $id";
+    $delete = mysqli_query($conn , $sql);
+    if(!$delete)
     {
-        unlink($filepath);
-
-        $id = $_POST['id'];
-
-        $conn = new mysqli("db","root","root","laboratory_system");
-        if ($conn->connect_error){die("Connection failed: " . $conn->connect_error);}// Check connection
-
-        $sql = "DELETE FROM engineering_lab WHERE id = $id";
-        $delete = mysqli_query($conn , $sql);
-        if(!$delete)
-        {
-            $success = false;
-            echo mysqli_error($conn);
-            mysqli_close($conn);
-        }
-        else
-        {
-            $success = true;
-            mysqli_close($conn);
-            echo "<h3>ข้อมูลถูกลบแล้ว</h3>";
-            back();
-        }
-    } 
-    else 
-    {
-        echo "File '$filename' does not exist.";
+        $success = false;
+        echo mysqli_error($conn);
+        mysqli_close($conn);
     }
+    else
+    {
+        $success = true;
+        mysqli_close($conn);
+        echo "<h3>ข้อมูลถูกลบแล้ว</h3>";
+        back();
+    }
+
 
     
 }
@@ -77,7 +71,7 @@ if($_POST['id'])
 function back()
 {
     $success = false;
-    header("refresh: 1; url=index.php");
+    header("refresh: 1.5; url=index.php");
 }
 ?>
 

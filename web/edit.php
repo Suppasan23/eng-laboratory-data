@@ -33,7 +33,7 @@ else
 ?>
 
 <?php
-if($_POST['id'])
+if(isset($_POST['submit'])) 
 {
 
     $file = $_FILES['new_pic'];
@@ -44,7 +44,7 @@ if($_POST['id'])
     $file_error = $file['error'];
 
     //Old file properties
-    $old_file = $_POST['old_pic'];
+    $old_file_name = $_POST['old_pic'];
 
     if(!empty($file_name))
     {
@@ -69,16 +69,11 @@ if($_POST['id'])
                     if (move_uploaded_file($file_tmp, $file_destination)) //เพิ่มภาพใหม่เข้าไปใน Directory
                     {
 
-                        $filepath = "../picture/" . $old_file; //path ของไฟล์ภาพเก่า
+                        $filepath = "../picture/" . $old_file_name; //path ของไฟล์ภาพเก่า
+                        unlink($filepath); //ลบไฟล์ภาพเก่าทิ้ง
 
-                        if (file_exists($filepath)) //เช็คว่า path ของไฟล์ภาพเก่ามีอยู่จริงไหม
-                        {
+                        replace_to_database($new_file_name); //ส่งชื่อไฟล์ภาพใหม่ไปให้ฟังก์ชั่นที่ทำหน้าที่บันทึกมันลงฐานข้อมูล
 
-                            unlink($filepath); //ลบไฟล์ภาพเก่าทิ้ง
-                            replace_to_database($new_file_name); //ส่งชื่อไฟล์ภาพใหม่ไปให้ฟังก์ชั่นที่ทำหน้าที่บันทึกมันลงฐานข้อมูล
-
-                        }
-                        else {echo "File '$filename' does not exist.";}
                     }
                     else {echo "Failed to save the image.";}
                 } 
@@ -91,7 +86,7 @@ if($_POST['id'])
     else
     {
 
-        replace_to_database($old_file);
+        replace_to_database($old_file_name);
 
     }
 }
@@ -118,7 +113,7 @@ function replace_to_database($image_name_parameter)
     
         if(!$replace)
         {
-            echo "<h3 style = 'color:red'>การเพิ่มข้อมูล เกิดข้อผิดพลาด</h3>";
+            echo "<h3 style = 'color:red'>การแก้ไขข้อมูล เกิดข้อผิดพลาด</h3>";
             echo mysqli_error($conn);
             mysqli_close($conn);
         }
@@ -140,8 +135,8 @@ function replace_to_database($image_name_parameter)
 <?php
 function back()
 {
-    $data = "";
-    header("refresh: 1; url=index.php");
+    $data = NULL;
+    header("refresh: 1.5; url=index.php");
 }
 ?>
 

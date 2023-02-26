@@ -68,16 +68,19 @@ if(isset($_POST['submit']))
                 
                     if(!$insert)
                     {
-                        $success = false;
                         echo "<h3 style = 'color:red'>การเพิ่มข้อมูล เกิดข้อผิดพลาด</h3>";
                         echo mysqli_error($conn);
                         mysqli_close($conn);
                     }
                     else
                     {
-                        $success = true;
                         $show_id = mysqli_insert_id($conn); 
+
+                        $sql = "SELECT * FROM engineering_lab WHERE id = $show_id";
+                        $result = mysqli_query($conn, $sql);
+                        $data = mysqli_fetch_array($result);
                         mysqli_close($conn);
+
                         echo "<h3 style = 'color:green'>ข้อมูลถูกเพิ่มแล้ว</h3>";
                         back();
                     }
@@ -93,8 +96,8 @@ if(isset($_POST['submit']))
 <?php
 function back()
 {
-    $success = false;
-    header("refresh: 1; url=index.php");
+    $data = NULL;
+    header("refresh: 1.5; url=index.php");
 }
 ?>
 
@@ -102,34 +105,51 @@ function back()
 <form method="POST" enctype="multipart/form-data">
 
     <label>id:</label>
-    <input style="width: 82px; background-color: #e6e6e6" type="text" id="id" name="id" value="" placeholder="<?php echo $success ? "$show_id" : "ไม่ต้องระบุ"; ?>" readonly><br>
+    <input style="width: 82px; background-color: #e6e6e6" type="text" id="id" name="id" value="" placeholder="<?php echo isset($data) ? $data['id'] : "ไม่ต้องระบุ"; ?>" readonly><br>
 
     <label for="branch">สาขา:</label>
     <select id="branch" name="branch">
-        <option value='โยธา' <?php echo ($success&&($branch == 'โยธา') ? "selected" : ""); ?>>โยธา</option>
-        <option value='ไฟฟ้า' <?php echo ($success&&($branch == 'ไฟฟ้า') ? "selected" : ""); ?>>ไฟฟ้า</option>
-        <option value='เครื่องกล' <?php echo ($success&&($branch == 'เครื่องกล') ? "selected" : ""); ?>>เครื่องกล</option>
-        <option value='อุตสาหการ' <?php echo ($success&&($branch == 'อุตสาหการ') ? "selected" : ""); ?>>อุตสาหการ</option>
-        <option value='คอมพิวเตอร์' <?php echo ($success&&($branch == 'คอมพิวเตอร์') ? "selected" : ""); ?>>คอมพิวเตอร์</option>
+        <option value='โยธา' <?php echo (isset($data)&&($data['branch'] == 'โยธา') ? "selected" : ""); ?>>โยธา</option>
+        <option value='ไฟฟ้า' <?php echo (isset($data)&&($data['branch'] == 'ไฟฟ้า') ? "selected" : ""); ?>>ไฟฟ้า</option>
+        <option value='เครื่องกล' <?php echo (isset($data)&&($data['branch'] == 'เครื่องกล') ? "selected" : ""); ?>>เครื่องกล</option>
+        <option value='อุตสาหการ' <?php echo (isset($data)&&($data['branch'] == 'อุตสาหการ') ? "selected" : ""); ?>>อุตสาหการ</option>
+        <option value='คอมพิวเตอร์' <?php echo (isset($data)&&($data['branch'] == 'คอมพิวเตอร์') ? "selected" : ""); ?>>คอมพิวเตอร์</option>
     </select><br>
 
   <label for="room">ห้อง:</label>
-  <input type="text" id="room" name="room" value="" placeholder="<?php echo $success ? "$room" : "" ; ?>"><br>
+  <input type="text" id="room" name="room" value="" placeholder="<?php echo isset($data) ? $data['room'] : "" ; ?>"><br>
 
   <label for="instrument">ชื่ออุปกรณ์:</label>
-  <input type="text" id="instrument" name="instrument" value="" placeholder="<?php echo $success ? "$instrument" : "" ; ?>"><br>
+  <input type="text" id="instrument" name="instrument" value="" placeholder="<?php echo isset($data) ? $data['instrument'] : "" ; ?>"><br>
 
   <label for="quantity">จำนวน:</label>
-  <input style="width: 150px;" type="number" id="quantity" name="quantity" value="" placeholder="<?php echo $success ? "$quantity" : "" ; ?>"><br>
+  <input style="width: 150px;" type="number" id="quantity" name="quantity" value="" placeholder="<?php echo isset($data) ? $data['quantity'] : "" ; ?>"><br>
 
   <label for="caretaker">ผู้ดูแล:</label>
-  <input type="text" id="caretaker" name="caretaker" value="" placeholder="<?php echo $success ? "$caretaker" : "" ; ?>"><br>
+  <input type="text" id="caretaker" name="caretaker" value="" placeholder="<?php echo isset($data) ? $data['caretaker'] : "" ; ?>"><br>
 
   <label for="file">รูปภาพ:</label>
-  <input type="file" id="file" name="file"><br><br>
+  <?php
+    if (isset($data))
+    {
+        echo '&nbsp;<img src="../picture/'.$data['image'].'" width="200" style="display: inline-block; vertical-align: top;"><br>';
+    }
+    else
+    {
+        echo '<input type="file" id="file" name="file"><br><br>';
+    }
+  ?>
 
-  <div class="button"><button type="submit" value="Submit" name="submit">ส่งข้อมูล</button>&nbsp;&nbsp;<a class="back" href="index.php">ย้อนกลับ</a></div>
-  
+  <?php
+    if (isset($data))
+    {
+        echo "";
+    }
+    else
+    {
+        echo '<div class="button"><button type="submit" value="Submit" name="submit">ส่งข้อมูล</button>&nbsp;&nbsp;<a class="back" href="index.php">ย้อนกลับ</a></div>';
+    }
+  ?>
   
 </form> 
 </fieldset>

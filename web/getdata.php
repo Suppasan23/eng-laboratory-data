@@ -3,7 +3,9 @@ session_start();
 ?>
 
  <?php
-        $q = $_REQUEST["q"];
+        $q = $_REQUEST["q"]
+        
+        ;
 
         $mysql = new mysqli("db","root","root","laboratory_system");
         if ($conn->connect_error){die("Connection failed: " . $conn->connect_error);}
