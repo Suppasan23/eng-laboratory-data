@@ -2,10 +2,8 @@
 session_start();
 ?>
 
- <?php
-        $q = $_REQUEST["q"]
-        
-        ;
+<?php
+        $q = $_REQUEST["q"];
 
         $mysql = new mysqli("db","root","root","laboratory_system");
         if ($conn->connect_error){die("Connection failed: " . $conn->connect_error);}
@@ -36,7 +34,6 @@ session_start();
             }
             printData($dataArgument);
         }
-
 
         function printData($dataParameter)
         {
@@ -69,7 +66,6 @@ session_start();
                     echo "<td><img src='../picture/".$dataParameter[$i]->image."' width='250'></td>";
 
                     
-
                     if(isset($_SESSION['name'])) 
                     {		
                         $id = $dataParameter[$i]->id; 

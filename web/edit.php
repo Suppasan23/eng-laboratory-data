@@ -13,27 +13,27 @@ session_start();
 </head>
 
 <?php
-if(isset($_SESSION['name'])) 
-{
-    $key_id = $_GET['key_id'];
+    if(isset($_SESSION['name'])) 
+    {
+        $key_id = $_GET['key_id'];
 
-    $conn = new mysqli("db","root","root","laboratory_system");// Create connection
-    if ($conn->connect_error){die("Connection failed: " . $conn->connect_error);}// Check connection
+        $conn = new mysqli("db","root","root","laboratory_system");// Create connection
+        if ($conn->connect_error){die("Connection failed: " . $conn->connect_error);}// Check connection
 
-    $sql = "SELECT * FROM engineering_lab WHERE id = $key_id";
-    $result = mysqli_query($conn, $sql);
-    $data = mysqli_fetch_array($result);
-    mysqli_close($conn);
-}
-else    
-{
-    echo "<h3>กระบวนการไม่ถูกต้อง</h3>";
-    back();
-}
+        $sql = "SELECT * FROM engineering_lab WHERE id = $key_id";
+        $result = mysqli_query($conn, $sql);
+        $data = mysqli_fetch_array($result);
+        mysqli_close($conn);
+    }
+    else    
+    {
+        echo "<h3>กระบวนการไม่ถูกต้อง</h3>";
+        back();
+    }
 ?>
 
 <?php
-if(isset($_POST['submit'])) 
+if(isset($_POST['submit']))
 {
 
     $file = $_FILES['new_pic'];
@@ -72,7 +72,9 @@ if(isset($_POST['submit']))
                         $filepath = "../picture/" . $old_file_name; //path ของไฟล์ภาพเก่า
                         unlink($filepath); //ลบไฟล์ภาพเก่าทิ้ง
 
-                        replace_to_database($new_file_name); //ส่งชื่อไฟล์ภาพใหม่ไปให้ฟังก์ชั่นที่ทำหน้าที่บันทึกมันลงฐานข้อมูล
+                        $success = replace_to_database($new_file_name); //ส่งชื่อไฟล์ภาพใหม่ไปให้ฟังก์ชั่นที่ทำหน้าที่บันทึกมันลงฐานข้อมูล
+                        $data = NULL;
+                        back();
 
                     }
                     else {echo "Failed to save the image.";}
@@ -85,9 +87,9 @@ if(isset($_POST['submit']))
     }
     else
     {
-
-        replace_to_database($old_file_name);
-
+        $success = replace_to_database($old_file_name);
+        $data = NULL;
+        back();
     }
 }
 ?>
@@ -119,15 +121,11 @@ function replace_to_database($image_name_parameter)
         }
         else
         {
-            $show_id = mysqli_insert_id($conn); 
-    
-            $sql = "SELECT * FROM engineering_lab WHERE id = $show_id";
+            $sql = "SELECT * FROM engineering_lab WHERE id = $id";
             $result = mysqli_query($conn, $sql);
-            $data = mysqli_fetch_array($result);
+            $success = mysqli_fetch_array($result);
             mysqli_close($conn);
-    
-            echo "<h3 style='color:#0000b3;'>ข้อมูลถูกแก้ไขแล้ว</h3>";
-            back();
+            return $success;
         }
     }
 ?>
@@ -135,49 +133,77 @@ function replace_to_database($image_name_parameter)
 <?php
 function back()
 {
-    $data = NULL;
     header("refresh: 1.5; url=index.php");
 }
 ?>
 
-<fieldset><legend><h3 style="color:#0000b3;">แก้ไขข้อมูล</h3></legend>
+<fieldset><legend><?php echo isset($success) ? "<h4 style='color:#0000b3;'>ข้อมูลถูกแก้ไขแล้ว</h4>" : "<h4 style='color:black;'>แก้ไขข้อมูล</h4>"; ?></legend>
+
 <form method="POST" enctype="multipart/form-data">
 
-    <label>id:</label>
-    <input style="width: 82px; background-color: #e6e6e6" type="text" id="id" name="id" value="<?php echo $data['id']; ?>" readonly><br>
+    <input type="hidden" id="id" name="id" value="<?php echo isset($success) ? $success['id'] : $data['id']; ?>">
 
-    <label for="branch">สาขา:</label>
-    <select id="branch" name="branch">
-        <option value='โยธา' <?php echo ($data['branch'] == 'โยธา' ? "selected" : ""); ?>>โยธา</option>
-        <option value='ไฟฟ้า' <?php echo ($data['branch'] == 'ไฟฟ้า' ? "selected" : ""); ?>>ไฟฟ้า</option>
-        <option value='เครื่องกล' <?php echo ($data['branch'] == 'เครื่องกล' ? "selected" : ""); ?>>เครื่องกล</option>
-        <option value='อุตสาหการ' <?php echo ($data['branch'] == 'อุตสาหการ' ? "selected" : ""); ?>>อุตสาหการ</option>
-        <option value='คอมพิวเตอร์' <?php echo ($data['branch'] == 'คอมพิวเตอร์' ? "selected" : ""); ?>>คอมพิวเตอร์</option>
-    </select><br>
+    <label for='branch'>สาขา:</label>
+    <?php
+        if (isset($success))
+        {
+            echo "<select id='branch' name='branch'>";
+            echo "<option value='" . $success['branch'] . "'>" . $success['branch'] . "</option>";
+            echo "</select><br>";
+        }
+        else
+        {
+            echo "<select id='branch' name='branch'>";
+            echo "<option value='โยธา'" . ($data['branch'] == 'โยธา' ? " selected" : "") . ">โยธา</option>";
+            echo "<option value='ไฟฟ้า'" . ($data['branch'] == 'ไฟฟ้า' ? " selected" : "") . ">ไฟฟ้า</option>";
+            echo "<option value='เครื่องกล'" . ($data['branch'] == 'เครื่องกล' ? " selected" : "") . ">เครื่องกล</option>";
+            echo "<option value='อุตสาหการ'" . ($data['branch'] == 'อุตสาหการ' ? " selected" : "") . ">อุตสาหการ</option>";
+            echo "<option value='คอมพิวเตอร์'" . ($data['branch'] == 'คอมพิวเตอร์' ? " selected" : "") . ">คอมพิวเตอร์</option>";
+            echo "</select><br>";
+        }
+    ?>
+
 
   <label for="room">ห้อง:</label>
-  <input type="text" id="room" name="room" value="<?php echo $data['room']; ?>"><br>
+  <input type="text" id="room" name="room" value="<?php echo isset($success) ? $success['room'] : $data['room']; ?>"><br>
 
   <label for="instrument">ชื่ออุปกรณ์:</label>
-  <input type="text" id="instrument" name="instrument" value="<?php echo $data['instrument']; ?>"><br>
+  <input type="text" id="instrument" name="instrument" value="<?php echo isset($success) ? $success['instrument'] : $data['instrument']; ?>"><br>
 
   <label for="quantity">จำนวน:</label>
-  <input style="width: 150px;" type="number" id="quantity" name="quantity" value="<?php echo $data['quantity']; ?>"><br>
+  <input style="width: 150px;" type="number" id="quantity" name="quantity" value="<?php echo isset($success) ? $success['quantity'] : $data['quantity']; ?>"><br>
 
   <label for="caretaker">ผู้ดูแล:</label>
-  <input type="text" id="caretaker" name="caretaker" value="<?php echo $data['caretaker']; ?>"><br>
+  <input type="text" id="caretaker" name="caretaker" value="<?php echo isset($success) ? $success['caretaker'] : $data['caretaker']; ?>"><br>
 
   <!--รูปก่า-->
   <label for="old_pic">รูปภาพ:</label>
-  &nbsp;<img src="<?php echo $success ? "-" : '../picture/'.$data["image"]; ?>" width="200" style="display: inline-block; vertical-align: top;"><br>
-  <input type="hidden" id="old_pic" name="old_pic" value="<?php echo $success ? "" : $data['image'] ; ?>" readonly>
+  &nbsp;<img src="<?php echo isset($success) ? '../picture/'.$success["image"] : '../picture/'.$data["image"]; ?>" width="200" style="display: inline-block; vertical-align: top;"><br>
+  <input type="hidden" id="old_pic" name="old_pic" value="<?php echo $data['image'] ; ?>" readonly>
 
   <!--รูปใหม่-->
-  <label for="new_pic">เปลี่ยนรูป:</label>
-  <input type="file" id="new_pic" name="new_pic"><br><br>
+    <?php
+        if (isset($success))
+        {
+            echo "<br><br>";
+        }
+        else
+        {
+            echo '<label for="new_pic">เปลี่ยนรูป:</label>';
+            echo '<input type="file" id="new_pic" name="new_pic"><br><br>';
+        }
+    ?>
 
-  <div class="button"><button type="submit" value="Submit" name="submit">ส่งข้อมูล</button>&nbsp;&nbsp;<a class="back" href="index.php">ย้อนกลับ</a></div>
-  
+    <?php
+        if (isset($success))
+        {
+            echo "";
+        }
+        else
+        {
+            echo '<div class="button"><button type="submit" value="Submit" name="submit">ส่งข้อมูล</button>&nbsp;&nbsp;<a class="back" href="index.php">ย้อนกลับ</a></div>';
+        }
+    ?>
 </form>
 </fieldset>
 

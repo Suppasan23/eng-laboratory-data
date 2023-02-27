@@ -1,4 +1,4 @@
-<?php 
+<?php
 ob_start();
 session_start(); 
 ?>
@@ -13,11 +13,11 @@ session_start();
 </head>
 
 <?php
-if(isset($_SESSION['name'])) 
+    if(isset($_SESSION['name'])) 
     {
         $data = NULL;
     }
-else
+    else
     {
         echo "<h3>กระบวนการไม่ถูกต้อง</h3>";
         back();
@@ -27,85 +27,84 @@ else
 
 <?php
 if(isset($_POST['submit'])) 
-{
-    $file = $_FILES['file'];
-
-    // file properties
-    $file_name = $file['name'];
-    $file_tmp = $file['tmp_name'];
-    $file_size = $file['size'];
-    $file_error = $file['error'];
-
-    // get file extension
-    $file_ext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
-    // allowed extensions
-    $allowed = array('jpg', 'jpeg', 'png', 'gif', 'webp');
-
-    if(in_array($file_ext, $allowed)) 
     {
-        if($file_error === 0) 
+        $file = $_FILES['file'];
+
+        // file properties
+        $file_name = $file['name'];
+        $file_tmp = $file['tmp_name'];
+        $file_size = $file['size'];
+        $file_error = $file['error'];
+
+        // get file extension
+        $file_ext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
+        // allowed extensions
+        $allowed = array('jpg', 'jpeg', 'png', 'gif', 'webp');
+
+        if(in_array($file_ext, $allowed)) 
         {
-            if($file_size <= 5000000) 
+            if($file_error === 0) 
             {
-
-                // create new unique file name to avoid overwrite
-                $new_file_name = uniqid('', true) . '.' . $file_ext;
-
-                // file directory
-                $file_destination = '../picture/' . $new_file_name;
-
-                // move file to directory
-                if (move_uploaded_file($file_tmp, $file_destination))
+                if($file_size <= 5000000) 
                 {
-                    $branch = $_POST['branch'];
-                    $room = $_POST['room'];
-                    $instrument = $_POST['instrument'];
-                    $quantity = $_POST['quantity'];
-                    $caretaker = $_POST['caretaker'];
-                
-                    $conn = new mysqli("db","root","root","laboratory_system");// Create connection
-                    if ($conn->connect_error){die("Connection failed: " . $conn->connect_error);}// Check connection
-                
-                    $sql = "INSERT INTO engineering_lab (branch, room, instrument, quantity, caretaker, image)
-                    VALUES ('$branch', '$room', '$instrument', '$quantity', '$caretaker', '$new_file_name');";
-                
-                    $insert = mysqli_query($conn,$sql);
-                
-                    if(!$insert)
+
+                    // create new unique file name to avoid overwrite
+                    $new_file_name = uniqid('', true) . '.' . $file_ext;
+
+                    // file directory
+                    $file_destination = '../picture/' . $new_file_name;
+
+                    // move file to directory
+                    if (move_uploaded_file($file_tmp, $file_destination))
                     {
-                        echo "<h3 style = 'color:red'>การเพิ่มข้อมูล เกิดข้อผิดพลาด</h3>";
-                        echo mysqli_error($conn);
-                        mysqli_close($conn);
-                    }
-                    else
-                    {
-                        $show_id = mysqli_insert_id($conn); 
+                        $branch = $_POST['branch'];
+                        $room = $_POST['room'];
+                        $instrument = $_POST['instrument'];
+                        $quantity = $_POST['quantity'];
+                        $caretaker = $_POST['caretaker'];
+                    
+                        $conn = new mysqli("db","root","root","laboratory_system");// Create connection
+                        if ($conn->connect_error){die("Connection failed: " . $conn->connect_error);}// Check connection
+                    
+                        $sql = "INSERT INTO engineering_lab (branch, room, instrument, quantity, caretaker, image)
+                        VALUES ('$branch', '$room', '$instrument', '$quantity', '$caretaker', '$new_file_name');";
+                    
+                        $insert = mysqli_query($conn,$sql);
+                    
+                        if(!$insert)
+                        {
+                            echo "<h3 style = 'color:red'>การเพิ่มข้อมูล เกิดข้อผิดพลาด</h3>";
+                            echo mysqli_error($conn);
+                            mysqli_close($conn);
+                        }
+                        else
+                        {
+                            $show_id = mysqli_insert_id($conn); 
 
-                        $sql = "SELECT * FROM engineering_lab WHERE id = $show_id";
-                        $result = mysqli_query($conn, $sql);
-                        $data = mysqli_fetch_array($result);
-                        mysqli_close($conn);
+                            $sql = "SELECT * FROM engineering_lab WHERE id = $show_id";
+                            $result = mysqli_query($conn, $sql);
+                            $data = mysqli_fetch_array($result);
+                            mysqli_close($conn);
 
-                        back();
-                    }
+                            back();
+                        }
 
-                } else {echo "Failed to save the image.";}
-            } else {echo "File size is too large.";}
-        } else {echo "Error uploading file.";}
-    } else {echo "ต้องใส่ไฟล์รูปภาพที่มีนามสกุล 'jpg', 'jpeg', 'png', 'gif' หรือ 'webp' เท่านั้น";}
-
-}
+                    } else {echo "Failed to save the image.";}
+                } else {echo "File size is too large.";}
+            } else {echo "Error uploading file.";}
+        } else {echo "ต้องใส่ไฟล์รูปภาพที่มีนามสกุล 'jpg', 'jpeg', 'png', 'gif' หรือ 'webp' เท่านั้น";}
+    }
 ?>
+
 
 <?php
 function back()
 {
-    $data = NULL;
     header("refresh: 1.5; url=index.php");
 }
 ?>
 
-<fieldset><legend><h4 style="color:#00802b;"><?php echo isset($data) ? "ข้อมูลถูกเพิ่มแล้ว" : "เพิ่มข้อมูล"; ?></h4></legend>
+<fieldset><legend><?php echo isset($data) ? "<h4 style='color:#00802b;'>เพิ่มข้อมูลสำเร็จ</h4>" : "<h4 style='color:black;'>เพิ่มข้อมูล</h4>"; ?></legend>
 <form method="POST" enctype="multipart/form-data">
 
     <input type="hidden" id="id" name="id" value="<?php echo $data['id']; ?>">
@@ -146,7 +145,7 @@ function back()
   <?php
     if (isset($data))
     {
-        echo "";
+        echo "<br><br>";
     }
     else
     {

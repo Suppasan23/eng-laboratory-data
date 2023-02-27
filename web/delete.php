@@ -65,12 +65,12 @@ if(isset($_POST['submit']))
 <?php
 function back()
 {
-    $data = NULL;
     header("refresh: 1.5; url=index.php");
 }
 ?>
 
 <fieldset><legend><h4 style="color:black;"><?php echo isset($data) ? "คุณต้องการลบข้อมูลต่อไปนี้ใช่หรือไม่?" : "ข้อมูลถูกลบแล้ว"; ?></h4></legend>
+
 <form method="POST" enctype="multipart/form-data">
 
     <input type="hidden" id="id" name="id" value="<?php echo $data['id'] ?>">
@@ -93,7 +93,7 @@ function back()
     <input style="background-color: #e6e6e6;" type="text" id="caretaker" name="caretaker" value="<?php echo $data['caretaker'] ?>" readonly><br>
 
     <label for="file">รูปภาพ:</label>
-    &nbsp;<img src="../picture/<?php echo $data['image']; ?>" width="200" style="display: inline-block; vertical-align: top;"><br><br>
+    &nbsp;<img src="<?php echo '../picture/'.$data['image']; ?>" width="200" style="display: inline-block; vertical-align: top;"><br><br>
     <input type="hidden" id="file" name="file" value="<?php echo $data['image'] ?>" readonly>
     
     <?php
@@ -103,7 +103,7 @@ function back()
         }
         else
         {
-            echo "";
+            echo "<br>";
         }
     ?>
 
