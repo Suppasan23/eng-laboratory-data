@@ -2,6 +2,7 @@
 body.for_index.php
 {
     font-family: Arial, Helvetica, sans-serif;
+    width: 100%;
 }
 
 div.header
@@ -11,12 +12,13 @@ div.header
     border-left: 1px solid black;
     border-right: 1px solid black;
     border-top: 1px solid black;
+    width: 100%;
 }
         div.header-one{
             background-color: #e6e6e6;
             margin: 3px;
             padding: 3px;
-            width: 36px;
+            width: 35px;
             text-align: center;
         }
         div.header-two{
@@ -39,6 +41,7 @@ div.body
     background-color: #800000;
     border-left: 1px solid black;
     border-right: 1px solid black;
+    width: 100%;
 }
         div.body-one{
             background-color: #f1f1f1;
@@ -48,7 +51,7 @@ div.body
             margin-right: 0px;
             padding: 3px;
             padding-right: 7px;
-            width: 12%;
+            width: 180px;
             text-align: center;
             border-right: 1px solid rgb(113, 113, 113);
         }
@@ -60,7 +63,7 @@ div.body
             margin-top: 0px;
             margin-left: 0px;
             padding: 3px;
-            width: 88%;
+            width: 100%;
             text-align: center;
             border: 1px solid #ccc;
         }

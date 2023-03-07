@@ -1,4 +1,4 @@
-<?php 
+<?php
 session_start(); 
 ?>
 
@@ -7,7 +7,6 @@ session_start();
 <head>
 <title>Engineering Laboratory</title>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="index_style.css" rel="stylesheet" type="text/css">
 </head>
 
